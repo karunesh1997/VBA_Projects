@@ -1,0 +1,67 @@
+# Save multiple files in a perticular folder
+
+Sub Loop_Save_My()
+
+
+   Dim wks As Worksheet
+ 
+    For Each wks In ActiveWorkbook.Worksheets
+        wks.Visible = xlSheetVisible
+    Next wks
+Dim path1 As String
+Dim name1 As String
+Dim i As Integer
+
+
+Sheets("MAIN").Select
+Dim sh As Worksheet
+Set sh = ThisWorkbook.Sheets("MAIN")
+
+Dim last_row As Integer
+last_row = Application.CountA(sh.Range("Q:Q"))
+
+
+'Dim Namesdct As Object, Names As Variant, i As Long, Name As Variant
+'Set Namesdct = CreateObject("Scripting.Dictionary")
+
+'Dim Pathdct As Object, Paths As Variant, p As Long, Path As Variant
+'Set Pathdct = CreateObject("Scripting.Dictionary")
+
+  'With ActiveSheet
+path1 = ThisWorkbook.Sheets("MAIN").Range("I11").Value
+
+For i = 1 To last_row
+Name = sh.Range("Q" & i).Value
+
+
+
+  'For Each Path In Pathdct.keys
+     Sheets(Name).Select
+    If IsEmpty(Range("B4").Value) = False Then
+    Columns("A:S").Select
+    Application.CutCopyMode = False
+    Selection.Copy
+    Workbooks.Add
+    Columns("A:A").Select
+    ActiveSheet.Paste
+
+    
+ 
+    ActiveWorkbook.SaveAs Filename:=path1 & sh.Range("P" & i).Value & ".xlsx", FileFormat:=xlOpenXMLWorkbook, CreateBackup:=False
+    ActiveWindow.Close
+    ThisWorkbook.Sheets("MAIN").Select
+ Else
+ Sheets("MAIN").Select
+ End If
+    
+
+  
+ Next
+
+'End With
+    
+    
+    
+    
+
+End Sub
