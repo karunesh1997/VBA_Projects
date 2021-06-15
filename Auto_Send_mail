@@ -1,0 +1,39 @@
+# Send multiple mails automatically with the help of Outlook
+
+Option Explicit
+
+Sub Send_Mails()
+Dim sh As Worksheet
+Set sh = ThisWorkbook.Sheets("Send_Mails")
+Dim i As Integer
+
+Dim OA As Object
+Dim Msg As Object
+
+Set OA = CreateObject("outlook.application")
+
+Dim last_row As Integer
+last_row = Application.CountA(sh.Range("A:A"))
+
+For i = 2 To last_row
+Set Msg = OA.CreateItem(0)
+Msg.To = sh.Range("A" & i).Value
+Msg.CC = sh.Range("B" & i).Value
+Msg.Subject = sh.Range("C" & i).Value
+Msg.Body = sh.Range("D" & i).Value
+
+If sh.Range("E" & i).Value <> "" Then
+    Msg.Attachments.Add sh.Range("E" & i).Value
+End If
+
+
+Msg.Send
+
+sh.Range("F" & i).Value = "Sent"
+
+Next i
+
+MsgBox "All the mails have been sent successfully"
+
+
+End Sub
